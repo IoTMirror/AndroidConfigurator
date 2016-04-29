@@ -71,4 +71,14 @@
         android:onClick="login"
         />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/closeButton"
+        android:text="Close"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:onClick="close"
+        />
+
 </RelativeLayout>

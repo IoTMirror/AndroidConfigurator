@@ -5,7 +5,8 @@ import android.content.Context;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
-public class Commons {
+public class Commons
+{
     private static Commons instance;
     private String serviceUrl;
     private RequestQueue requestQueue;

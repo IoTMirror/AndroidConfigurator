@@ -1,5 +1,6 @@
 package org.iotmirror.iotmirrorconfigurator;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +15,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LoginActivity extends AppCompatActivity implements Response.Listener<JSONObject>, Response.ErrorListener {
+public class LoginActivity extends AppCompatActivity implements Response.Listener<JSONObject>, Response.ErrorListener
+{
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -39,6 +41,11 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
         }
     }
 
+    protected void close(View view)
+    {
+        finish();
+    }
+
     @Override
     public void onResponse(JSONObject response)
     {
@@ -54,6 +61,12 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
         {
             Commons.getInstance(getApplicationContext()).login(token);
             Toast.makeText(getApplicationContext(),"Successfully logged in",Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(),ConfigActivity.class);
+            startActivity(intent);
+            EditText loginET = (EditText) findViewById(R.id.login);
+            EditText passwordET = (EditText) findViewById(R.id.password);
+            loginET.getText().clear();
+            passwordET.getText().clear();
         }
     }
 
@@ -71,4 +84,5 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
             }
         }
     }
+
 }
