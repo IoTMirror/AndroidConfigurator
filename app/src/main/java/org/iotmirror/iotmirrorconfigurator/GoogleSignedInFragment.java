@@ -1,6 +1,7 @@
 package org.iotmirror.iotmirrorconfigurator;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,21 +18,21 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONObject;
 
 
-
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link IUpdateTwitter} interface
+ * {@link IUpdateGoogle} interface
  * to handle interaction events.
- * Use the {@link TwitterSignedInFragment#newInstance} factory method to
+ * Use the {@link GoogleSignedInFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TwitterSignedInFragment extends Fragment implements View.OnClickListener, Response.ErrorListener, Response.Listener<JSONObject> {
+public class GoogleSignedInFragment extends Fragment implements View.OnClickListener, Response.ErrorListener, Response.Listener<JSONObject>
+{
     private String name;
 
-    private IUpdateTwitter mListener;
+    private IUpdateGoogle mListener;
 
-    public TwitterSignedInFragment()
+    public GoogleSignedInFragment()
     {
         // Required empty public constructor
     }
@@ -40,11 +41,11 @@ public class TwitterSignedInFragment extends Fragment implements View.OnClickLis
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment TwitterSignedInFragment.
+     * @return A new instance of fragment GoogleSignedInFragment.
      */
-    public static TwitterSignedInFragment newInstance(String name)
+    public static GoogleSignedInFragment newInstance(String name)
     {
-        TwitterSignedInFragment fragment = new TwitterSignedInFragment();
+        GoogleSignedInFragment fragment = new GoogleSignedInFragment();
         Bundle args = new Bundle();
         args.putString("name",name);
         fragment.setArguments(args);
@@ -65,7 +66,7 @@ public class TwitterSignedInFragment extends Fragment implements View.OnClickLis
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_twitter_signed_in, container, false);
+        View v =  inflater.inflate(R.layout.fragment_google_signed_in, container, false);
         Button b = (Button) v.findViewById(R.id.signOutButton);
         b.setOnClickListener(this);
         if(name!=null)
@@ -80,13 +81,13 @@ public class TwitterSignedInFragment extends Fragment implements View.OnClickLis
     public void onAttach(Context context)
     {
         super.onAttach(context);
-        if (context instanceof IUpdateTwitter)
+        if (context instanceof IUpdateGoogle)
         {
-            mListener = (IUpdateTwitter) context;
+            mListener = (IUpdateGoogle) context;
         } else
         {
             throw new RuntimeException(context.toString()
-                    + " must implement IUpdateTwitter");
+                    + " must implement IUpdateGoogle");
         }
     }
 
@@ -109,14 +110,14 @@ public class TwitterSignedInFragment extends Fragment implements View.OnClickLis
                 if(token!=null)
                 {
                     JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
-                            commons.getServiceUrl()+"twitter/signout/"+token,null,this,this);
+                            commons.getServiceUrl()+"google/signout/"+token,null,this,this);
                     commons.getRequestQueue().add(request);
                 }
                 else
                 {
                     if (mListener != null)
                     {
-                        mListener.updateTwitter();
+                        mListener.updateGoogle();
                     }
                 }
             }
@@ -132,7 +133,7 @@ public class TwitterSignedInFragment extends Fragment implements View.OnClickLis
     {
         if (mListener != null)
         {
-            mListener.updateTwitter();
+            mListener.updateGoogle();
         }
     }
 
@@ -141,7 +142,7 @@ public class TwitterSignedInFragment extends Fragment implements View.OnClickLis
     {
         if (mListener != null)
         {
-            mListener.updateTwitter();
+            mListener.updateGoogle();
         }
     }
 }

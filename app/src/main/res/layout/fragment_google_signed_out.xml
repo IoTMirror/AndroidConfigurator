@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,30 +6,30 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="org.iotmirror.iotmirrorconfigurator.ConfigActivity">
+    tools:context="org.iotmirror.iotmirrorconfigurator.GoogleSignedOutFragment">
 
-    <FrameLayout
-        android:id="@+id/twitterContainer"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Google"
         android:layout_alignParentTop="true"
-        />
-
-    <FrameLayout
-        android:id="@+id/googleContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/twitterContainer"
-        />
+        android:id="@+id/googleTextView"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Logout"
-        android:id="@+id/logoutButton"
-        android:onClick="logout"
-        android:layout_below="@id/googleContainer"
-        />
+        android:id="@+id/signInButton"
+        android:text="Sign in"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/googleTextView"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/googleTextView"
+        android:id="@+id/signedTextView"
+        android:text="Signed out"/>
 
 </RelativeLayout>

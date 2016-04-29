@@ -15,8 +15,120 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ConfigActivity extends AppCompatActivity implements IUpdateTwitter, Response.ErrorListener, Response.Listener<JSONObject>
-{
+public class ConfigActivity extends AppCompatActivity implements IUpdateTwitter, IUpdateGoogle {
+    public class TwitterUpdateResponseHandler implements Response.ErrorListener, Response.Listener<JSONObject> {
+
+        @Override
+        public void onErrorResponse(VolleyError error)
+        {
+            if (error.networkResponse != null)
+            {
+                String message = null;
+                switch (error.networkResponse.statusCode)
+                {
+                    case 401:
+                    {
+                        break;
+                    }
+                    case 404:
+                    {
+                        break;
+                    }
+                    case 429:
+                    {
+                        message = "Twitter: too many requests";
+                        break;
+                    }
+                    default:
+                    {
+                        message = "Twitter: unknown response";
+                    }
+                }
+                if(message!=null)
+                {
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                }
+            }
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.twitterContainer, TwitterSignedOutFragment.newInstance());
+            ft.commit();
+        }
+
+        @Override
+        public void onResponse(JSONObject response)
+        {
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            String name = "";
+            try
+            {
+                name = response.get("name") + " (" + response.getString("screen_name") + ")";
+            } catch (JSONException e)
+            {
+            }
+            ft.replace(R.id.twitterContainer, TwitterSignedInFragment.newInstance(name));
+            ft.commit();
+        }
+
+    }
+
+    public class GoogleUpdateResponseHandler implements Response.ErrorListener, Response.Listener<JSONObject>
+    {
+
+        @Override
+        public void onErrorResponse(VolleyError error)
+        {
+            if (error.networkResponse != null)
+            {
+                String message = null;
+                switch (error.networkResponse.statusCode)
+                {
+                    case 401:
+                    {
+                        break;
+                    }
+                    case 404:
+                    {
+                        break;
+                    }
+                    case 429:
+                    {
+                        message = "Google: too many requests";
+                        break;
+                    }
+                    default:
+                    {
+                        message = "Google: unknown response";
+                    }
+                }
+                if(message!=null)
+                {
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                }
+            }
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.googleContainer, GoogleSignedOutFragment.newInstance());
+            ft.commit();
+        }
+
+        @Override
+        public void onResponse(JSONObject response)
+        {
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            String name = "";
+            try
+            {
+                name = response.get("name") + " <" + response.getString("email") + ">";
+            } catch (JSONException e)
+            {
+            }
+            ft.replace(R.id.googleContainer, GoogleSignedInFragment.newInstance(name));
+            ft.commit();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -24,6 +136,7 @@ public class ConfigActivity extends AppCompatActivity implements IUpdateTwitter,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config);
         updateTwitter();
+        updateGoogle();
     }
 
     public void logout(View v)
@@ -44,8 +157,9 @@ public class ConfigActivity extends AppCompatActivity implements IUpdateTwitter,
         String token = commons.getSessionToken();
         if(token!=null)
         {
+            TwitterUpdateResponseHandler handler = new TwitterUpdateResponseHandler();
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
-                    commons.getServiceUrl()+"twitter/users/"+token,null,this,this);
+                    commons.getServiceUrl()+"twitter/users/"+token,null,handler,handler);
             commons.getRequestQueue().add(request);
         }
         else
@@ -55,53 +169,21 @@ public class ConfigActivity extends AppCompatActivity implements IUpdateTwitter,
     }
 
     @Override
-    public void onErrorResponse(VolleyError error)
+    public void updateGoogle()
     {
-        if(error.networkResponse!=null)
+        Commons commons = Commons.getInstance(getApplicationContext());
+        String token = commons.getSessionToken();
+        if(token!=null)
         {
-            String message="";
-            switch(error.networkResponse.statusCode)
-            {
-                case 401:
-                {
-                    message="User tokens invalid - not signed in";
-                    break;
-                }
-                case 404:
-                {
-                    message="User not found - not signed in";
-                    break;
-                }
-                case 429:
-                {
-                    message="Too many requests";
-                    break;
-                }
-                default:
-                {
-                    message="Unknown response";
-                }
-            }
-            Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+            GoogleUpdateResponseHandler handler = new GoogleUpdateResponseHandler();
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                    commons.getServiceUrl()+"google/users/"+token,null,handler,handler);
+            commons.getRequestQueue().add(request);
         }
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.twitterContainer, TwitterSignedOutFragment.newInstance());
-        ft.commit();
-    }
-
-    @Override
-    public void onResponse(JSONObject response)
-    {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        String name = "";
-        try {
-            name = response.get("name") + " (" + response.getString("screen_name")+")";
-        } catch (JSONException e) {
+        else
+        {
+            doLogout();
         }
-        ft.replace(R.id.twitterContainer,TwitterSignedInFragment.newInstance(name));
-        ft.commit();
     }
 
     @Override
@@ -109,5 +191,7 @@ public class ConfigActivity extends AppCompatActivity implements IUpdateTwitter,
     {
         super.onResume();
         updateTwitter();
+        updateGoogle();
     }
+
 }
