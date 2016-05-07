@@ -1,6 +1,5 @@
 package org.iotmirror.iotmirrorconfigurator;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,17 +14,16 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LoginActivity extends AppCompatActivity implements Response.Listener<JSONObject>, Response.ErrorListener
-{
+public class CreateUserActivity extends AppCompatActivity implements Response.ErrorListener, Response.Listener<JSONObject> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_create_user);
     }
 
-    protected void login(View view)
+    protected void createUser(View view)
     {
         EditText loginET = (EditText) findViewById(R.id.login);
         EditText passwordET = (EditText) findViewById(R.id.password);
@@ -34,20 +32,14 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
         try {
             requestData.put("username",loginET.getText().toString());
             requestData.put("password",passwordET.getText().toString());
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,commons.getServiceUrl()+"login",requestData,this,this);
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,commons.getServiceUrl()+"user",requestData,this,this);
             commons.getRequestQueue().add(request);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    protected void createUser(View view)
-    {
-        Intent intent = new Intent(getApplicationContext(),CreateUserActivity.class);
-        startActivity(intent);
-    }
-
-    protected void close(View view)
+    protected void cancel(View view)
     {
         finish();
     }
@@ -55,40 +47,26 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
     @Override
     public void onResponse(JSONObject response)
     {
-        String token = null;
-        try
-        {
-            token = response.getString("Token");
-        } catch (JSONException e)
-        {
-            Toast.makeText(getApplicationContext(),"Invalid server response",Toast.LENGTH_SHORT).show();
-        }
-        if(token!=null)
-        {
-            Commons.getInstance(getApplicationContext()).login(token);
-            Toast.makeText(getApplicationContext(),"Successfully logged in",Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getApplicationContext(),ConfigActivity.class);
-            startActivity(intent);
-            EditText loginET = (EditText) findViewById(R.id.login);
-            EditText passwordET = (EditText) findViewById(R.id.password);
-            loginET.getText().clear();
-            passwordET.getText().clear();
-        }
+        Toast.makeText(getApplicationContext(),"User created",Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override
     public void onErrorResponse(VolleyError error)
     {
-        if(error.networkResponse!=null && error.networkResponse.statusCode==400 & error.networkResponse.data!=null)
+        if(error.networkResponse!=null && error.networkResponse.statusCode==409 & error.networkResponse.data!=null)
         {
             try {
                 JSONObject response = new JSONObject(new String(error.networkResponse.data));
-                String result = response.getString("Result");
+                String result = response.getString("error");
                 Toast.makeText(getApplicationContext(),result,Toast.LENGTH_SHORT).show();
             } catch (JSONException e) {
                 Toast.makeText(getApplicationContext(),"Unknown response",Toast.LENGTH_SHORT).show();
             }
         }
+        else
+        {
+            Toast.makeText(getApplicationContext(),"Unknown response",Toast.LENGTH_SHORT).show();
+        }
     }
-
 }

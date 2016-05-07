@@ -7,7 +7,18 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="org.iotmirror.iotmirrorconfigurator.LoginActivity">
+    tools:context="org.iotmirror.iotmirrorconfigurator.CreateUserActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Create User"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textAlignment="center"
+        android:id="@+id/titleTextView"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -15,12 +26,12 @@
         android:text="Login:"
         android:id="@+id/loginTextView"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/titleTextView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignRight="@+id/passwordTextView"
         android:layout_alignEnd="@+id/passwordTextView"
-        android:layout_marginTop="35dp" />
+        android:layout_marginTop="10dp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -60,35 +71,31 @@
         android:layout_alignParentEnd="true"
         />
 
-    <Button
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/loginButton"
-        android:text="Login"
         android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/passwordTextView"
-        android:onClick="login"
-        />
+        android:orientation="horizontal"
+        android:layout_below="@id/passwordTextView">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/createUserButton"
-        android:text="Create New User"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/loginButton"
-        android:onClick="createUser"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/createUserButton"
+            android:text="Create User"
+            android:layout_weight="1"
+            android:onClick="createUser"
+            />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/closeButton"
-        android:text="Close"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:onClick="close"
-        />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cancelButton"
+            android:text="Cancel"
+            android:layout_weight="1"
+            android:onClick="cancel"
+            />
+    </LinearLayout>
+
 
 </RelativeLayout>
