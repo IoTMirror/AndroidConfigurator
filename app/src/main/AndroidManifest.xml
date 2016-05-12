@@ -19,6 +19,7 @@
         </activity>
         <activity android:name=".ConfigActivity" />
         <activity android:name=".CreateUserActivity"></activity>
+        <activity android:name=".OAuthSigninActivity"></activity>
     </application>
 
 </manifest>

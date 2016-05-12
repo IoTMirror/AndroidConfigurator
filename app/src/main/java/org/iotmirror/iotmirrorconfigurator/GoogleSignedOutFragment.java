@@ -89,7 +89,7 @@ public class GoogleSignedOutFragment extends Fragment implements View.OnClickLis
                 String token = commons.getSessionToken();
                 if(token!=null)
                 {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(commons.getServiceUrl()+"google/signin/"+token));
+                    Intent browserIntent = OAuthSigninActivity.getNewIntent(getContext(), Uri.parse(commons.getServiceUrl()+"google/signin/"+token));
                     startActivity(browserIntent);
                 }
                 else

@@ -67,7 +67,7 @@ public class TwitterSignedOutFragment extends Fragment implements View.OnClickLi
         } else
         {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement IUpdateTwitter");
         }
     }
 
@@ -89,7 +89,7 @@ public class TwitterSignedOutFragment extends Fragment implements View.OnClickLi
                 String token = commons.getSessionToken();
                 if(token!=null)
                 {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(commons.getServiceUrl()+"twitter/signin/"+token));
+                    Intent browserIntent = OAuthSigninActivity.getNewIntent(getContext(),Uri.parse(commons.getServiceUrl()+"twitter/signin/"+token));
                     startActivity(browserIntent);
                 }
                 else
