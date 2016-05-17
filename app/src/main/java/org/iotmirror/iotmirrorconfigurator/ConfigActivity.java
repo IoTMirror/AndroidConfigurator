@@ -1,5 +1,6 @@
 package org.iotmirror.iotmirrorconfigurator;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -142,6 +143,12 @@ public class ConfigActivity extends AppCompatActivity implements IUpdateTwitter,
     public void logout(View v)
     {
         doLogout();
+    }
+
+    public void openWidgetManager(View v)
+    {
+        Intent intent = new Intent(getApplicationContext(),WidgetManagerActivity.class);
+        startActivity(intent);
     }
 
     public void doLogout()

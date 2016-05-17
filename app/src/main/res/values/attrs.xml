@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="WidgetManagerView">
+        <attr name="columnCount" format="integer" />
+        <attr name="rowCount" format="integer" />
+        <attr name="gridColor" format="color" />
+        <attr name="showGrid" format="boolean" />
+    </declare-styleable>
+</resources>

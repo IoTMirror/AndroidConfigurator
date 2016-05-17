@@ -26,10 +26,19 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Widget manager"
+        android:id="@+id/widgetManagerButton"
+        android:onClick="openWidgetManager"
+        android:layout_below="@id/googleContainer"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Logout"
         android:id="@+id/logoutButton"
         android:onClick="logout"
-        android:layout_below="@id/googleContainer"
+        android:layout_below="@id/widgetManagerButton"
         />
 
 
