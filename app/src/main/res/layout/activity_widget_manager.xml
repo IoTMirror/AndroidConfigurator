@@ -10,7 +10,7 @@
     tools:context="org.iotmirror.iotmirrorconfigurator.WidgetManagerActivity">
 
     <fragment
-        android:id="@+id/listFragment"
+        android:id="@+id/widgetManagerFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         class="org.iotmirror.iotmirrorconfigurator.WidgetManagerFragment"

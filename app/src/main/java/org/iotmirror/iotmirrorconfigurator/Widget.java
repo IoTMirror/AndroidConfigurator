@@ -1,6 +1,8 @@
 package org.iotmirror.iotmirrorconfigurator;
 
-public class Widget
+import java.io.Serializable;
+
+public class Widget implements Serializable
 {
 
     private int column;

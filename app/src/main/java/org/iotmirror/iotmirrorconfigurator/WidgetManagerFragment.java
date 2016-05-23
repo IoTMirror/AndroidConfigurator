@@ -5,6 +5,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +29,7 @@ import java.util.Vector;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WidgetManagerFragment extends Fragment implements View.OnClickListener{
+public class WidgetManagerFragment extends Fragment implements View.OnClickListener, IWidgetStateListener{
 
     public class DataResponseHandler implements Response.ErrorListener, Response.Listener<JSONObject>
     {
@@ -42,6 +44,17 @@ public class WidgetManagerFragment extends Fragment implements View.OnClickListe
         public void onResponse(JSONObject response)
         {
             widgets = new Vector<>();
+            if(fragments!=null)
+            {
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                for(Fragment f : fragments)
+                {
+                    ft.remove(f);
+                }
+                ft.commit();
+            }
+            fragments = new Vector<>();
             try {
                 JSONArray widgetsArray = response.getJSONArray("Widgets");
                 for(int i=0; i<widgetsArray.length();++i)
@@ -79,11 +92,20 @@ public class WidgetManagerFragment extends Fragment implements View.OnClickListe
                     }
                     Widget w = new Widget(name,column,row,colSpan,rowSpan,color);
                     widgets.add(w);
+                    if(fragments!=null)
+                    {
+                        FragmentManager fm = getActivity().getSupportFragmentManager();
+                        FragmentTransaction ft = fm.beginTransaction();
+                        WidgetInfoFragment f = WidgetInfoFragment.newInstance(w);
+                            ft.add(R.id.widgetsInfo,f);
+                        ft.commit();
+                        fragments.add(f);
+                    }
                 }
-                reloadWidgets();
             } catch (JSONException e) {
                 Toast.makeText(getContext(),"Invalid server response",Toast.LENGTH_SHORT).show();
             }
+            reloadWidgets();
         }
     }
 
@@ -111,6 +133,7 @@ public class WidgetManagerFragment extends Fragment implements View.OnClickListe
     }
 
     Vector<Widget> widgets;
+    Vector<Fragment> fragments;
     ICancelButtonListener mListener;
 
     public WidgetManagerFragment() {
@@ -236,5 +259,10 @@ public class WidgetManagerFragment extends Fragment implements View.OnClickListe
     {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void widgetStateChanged() {
+        reloadWidgets();
     }
 }
