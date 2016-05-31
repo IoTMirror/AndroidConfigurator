@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "424305337499",
+    "firebase_url": "https://glowing-torch-3284.firebaseio.com",
+    "project_id": "glowing-torch-3284",
+    "storage_bucket": "glowing-torch-3284.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:424305337499:android:b1770bc46b55a353",
+        "android_client_info": {
+          "package_name": "org.iotmirror.iotmirrorconfigurator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "424305337499-9um3kimdcn6gh5cncds2kuekasoiff80.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdP5L5ForXNhL8-rac_IKL5mOHXXh4Yws"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

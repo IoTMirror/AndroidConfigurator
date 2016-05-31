@@ -15,10 +15,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-
 public class LoginActivity extends AppCompatActivity implements Response.Listener<JSONObject>, Response.ErrorListener
 {
 
@@ -27,10 +23,6 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        MobileAds.initialize(getApplicationContext(), "ca-app-pub-2643006952981574/2079476040");
-        AdView mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
     }
 
     protected void login(View view)
@@ -75,7 +67,7 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
         {
             Commons.getInstance(getApplicationContext()).login(token);
             Toast.makeText(getApplicationContext(),"Successfully logged in",Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getApplicationContext(),ConfigActivity.class);
+            Intent intent = new Intent(getApplicationContext(),AdvertActivity.class);
             startActivity(intent);
             EditText loginET = (EditText) findViewById(R.id.login);
             EditText passwordET = (EditText) findViewById(R.id.password);
