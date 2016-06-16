@@ -193,6 +193,12 @@ public class ConfigActivity extends AppCompatActivity implements IUpdateTwitter,
         }
     }
 
+    public void manageMirrors(View v)
+    {
+        Intent intent = new Intent(getApplicationContext(),MirrorsManagerActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public void onResume()
     {

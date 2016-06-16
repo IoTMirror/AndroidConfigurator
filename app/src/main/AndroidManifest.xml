@@ -20,8 +20,9 @@
         <activity android:name=".ConfigActivity" />
         <activity android:name=".CreateUserActivity" />
         <activity android:name=".OAuthSigninActivity" />
-        <activity android:name=".WidgetManagerActivity"></activity>
-        <activity android:name=".AdvertActivity"></activity>
+        <activity android:name=".WidgetManagerActivity" />
+        <activity android:name=".AdvertActivity" />
+        <activity android:name=".MirrorsManagerActivity"></activity>
     </application>
 
 </manifest>
