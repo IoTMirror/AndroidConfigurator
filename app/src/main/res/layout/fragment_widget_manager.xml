@@ -13,9 +13,9 @@
         <org.iotmirror.iotmirrorconfigurator.WidgetManagerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/widget_manager"
-            widgets:columnCount="8"
-            widgets:rowCount="8"
+            android:id="@+id/widgetManager"
+            widgets:columnCount="16"
+            widgets:rowCount="12"
             widgets:gridColor="#FF000000"
             android:layout_weight="15"/>
 

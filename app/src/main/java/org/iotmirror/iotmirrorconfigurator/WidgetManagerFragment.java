@@ -43,18 +43,19 @@ public class WidgetManagerFragment extends Fragment implements View.OnClickListe
         @Override
         public void onResponse(JSONObject response)
         {
+            WidgetManagerView wmv = (WidgetManagerView) getView().findViewById(R.id.widgetManager);
+            wmv.removeWidgets();
             widgets = new Vector<>();
-            if(fragments!=null)
+            FragmentManager fm = getActivity().getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            for(Fragment f : fm.getFragments())
             {
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                for(Fragment f : fragments)
+                if(f instanceof WidgetInfoFragment)
                 {
                     ft.remove(f);
                 }
-                ft.commit();
             }
-            fragments = new Vector<>();
+            ft.commit();
             try {
                 JSONArray widgetsArray = response.getJSONArray("Widgets");
                 for(int i=0; i<widgetsArray.length();++i)
@@ -91,16 +92,9 @@ public class WidgetManagerFragment extends Fragment implements View.OnClickListe
 
                     }
                     Widget w = new Widget(name,column,row,colSpan,rowSpan,color);
+                    WidgetInfoFragment f = WidgetInfoFragment.newInstance(w);
+                    fm.beginTransaction().add(R.id.widgetsInfo,f).commit();
                     widgets.add(w);
-                    if(fragments!=null)
-                    {
-                        FragmentManager fm = getActivity().getSupportFragmentManager();
-                        FragmentTransaction ft = fm.beginTransaction();
-                        WidgetInfoFragment f = WidgetInfoFragment.newInstance(w);
-                            ft.add(R.id.widgetsInfo,f);
-                        ft.commit();
-                        fragments.add(f);
-                    }
                 }
             } catch (JSONException e) {
                 Toast.makeText(getContext(),"Invalid server response",Toast.LENGTH_SHORT).show();
@@ -133,7 +127,6 @@ public class WidgetManagerFragment extends Fragment implements View.OnClickListe
     }
 
     Vector<Widget> widgets;
-    Vector<Fragment> fragments;
     ICancelButtonListener mListener;
 
     public WidgetManagerFragment() {
@@ -180,7 +173,7 @@ public class WidgetManagerFragment extends Fragment implements View.OnClickListe
 
     public void reloadWidgets()
     {
-        WidgetManagerView wmv = (WidgetManagerView) getView().findViewById(R.id.widget_manager);
+        WidgetManagerView wmv = (WidgetManagerView) getView().findViewById(R.id.widgetManager);
         wmv.removeWidgets();
         if(widgets !=null)
         {
